@@ -1,0 +1,18 @@
+Features of the API
+  1. Accessing the title of the video.
+  2. Accessing the thumbnail
+  3. Access the video directly.
+  4. Displaying different download options for the videos.
+  5. Setting up the directory to which downloads are to be sent.
+  6. 
+
+how:
+1. inheriting the Youtube class from the pytube library.
+2. making use of the module to use the video id provided by the user to get all the information about the video.
+
+
+functions of the class:
+  1. init function which takes as input the video id and and uses it to get info about the video. 
+    atributes:  
+      video: it is the video info itself.
+  2. title option which shows the 
