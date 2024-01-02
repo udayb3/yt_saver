@@ -41,13 +41,17 @@ class Video():
 
         print("\n")
         opt = self.input_comp()
-        self.line()
+        
 
         if opt not in dt_opt.keys():
           print( "\nSorry, the option which you have entered is incorrect. Try again" )
         else:
-          ans=dt_opt[opt]()     # Calling function through the mapping
+          
+          # Calling function through the mapping
+          ans=dt_opt[opt]()     
           checker1 = ans
+        
+        self.line()
 
       print("\nExiting the script for the current video id...........................Done :)\n")
 
@@ -64,7 +68,7 @@ class Video():
       [ 'normal' , 'To show properties of both audio and video format files' ],
       [ 'download' , 'To download the video with the given tag.' ],
       [ 'stop' , 'To quit the options for the current video' ],
-      ['options' , 'To display options']
+      [ 'options' , 'To display options']
     ] )
     
     print("\nThere are different options which you can try. The list of options is given below.")
@@ -87,13 +91,13 @@ class Video():
   def title( self ):
     """This shows the title of the video"""
     
-    print( self.name )
+    print( "\n" + self.name )
     return 1
   
   def thumbnail( self ):
     """This gives the link to the thumbnail file"""
         
-    print( self.image )
+    print( "\n" + self.image )
     return 1
 
   def stream_audio( self ):
@@ -137,10 +141,10 @@ class Video():
 
   def download( self ):
     tag=int(  input("\nEnter the tag number which you have taken by finding the progressive, audio and video streams\n")  )
-    vd=samp.streams.get_by_itag(tag)
+    vd = self.clip.streams.get_by_itag(tag)
 
     vd.download(output_path='Videos/yt')
-    print("Finished with the download")
+    print("\nFinished with the download")
 
     return 1
 
