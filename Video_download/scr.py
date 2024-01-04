@@ -3,18 +3,19 @@ import sys
 from prettytable import PrettyTable
 from time import sleep
 
-
 class Video():
   
-  def __init__(self,id:str):
+  def __init__(self , id:str , path:str ):
     """
     This gives a better approaach to getting the info regarding the video and download it from different streams.
-    : `id`  It is the youtube video id
+    : `id`   It is the youtube video id
+    : 'path' The absolute path( starting with ~/ ) where you want to save your videos
     """
     
     # Setting up the general information and obtaining the video. 
     self.link = "https://www.youtube.com/"+ id
     self.clip = YouTube( self.link )
+    self.save_path=path 
       
     sleep(0.2)
     
@@ -40,7 +41,8 @@ class Video():
       while( checker1 ):
 
         print("\n")
-        opt = self.input_comp()
+        # Input for entering the options
+        opt = self.input_comp( "Enter the option" )
         
 
         if opt not in dt_opt.keys():
@@ -76,11 +78,13 @@ class Video():
     
     return 1
 
-  def input_comp( self )->str:
+  def input_comp( self , message )->str:
     """It is used to counter some of the errors which can be encountered during the entering of the options or the download link."""
     
     try:
-      inp = input("Enter the option: ")
+      inp = input(f"{message}: ")
+      inp = inp.strip()
+      
       return inp
     except KeyboardInterrupt:
       print( "\nYou have interrupted the program. Run the script again to get information about downloading the video" )
@@ -140,10 +144,10 @@ class Video():
     return 1
 
   def download( self ):
-    tag=int(  input("\nEnter the tag number which you have taken by finding the progressive, audio and video streams\n")  )
+    tag=int(  self.input_comp( message = "\nEnter the tag number which you have taken by finding the progressive, audio and video streams" ) )
     vd = self.clip.streams.get_by_itag(tag)
 
-    vd.download(output_path='Videos/yt')
+    vd.download(output_path = self.save_path)
     print("\nFinished with the download")
 
     return 1
@@ -158,7 +162,6 @@ class Video():
     
     return 0
 
-
 # The Main Script
 def main():
   """It takes in the id to the youtube video and returns some other information regarding to it."""
@@ -168,22 +171,21 @@ def main():
     print("There are no video id's provided")
 
   else:
-    # Creating the link for the video
-        
+    
     for i in range(1,num_arg):
       
       print(f"Checking for the video with the id number {i}............\n")
       ID = sys.argv[i]
 
+      # Checking for the error when the wrong video id is provided
       try:
-        vid = Video( ID )
+        vid = Video( ID , 'yt' )
       except:
         raise Exception( "Sorry, An error has occured. Please check the video id or the video might not be available. Proceeding on to the next video." )
         continue
       
       print( f"Video:  {vid.name}." )
       vid.options()
-
 
 # Running the script
 if __name__ == "__main__":
