@@ -1,7 +1,10 @@
+#!/usr/bin/python
+
 from pytube import YouTube
 import sys
 from prettytable import PrettyTable
 from time import sleep
+from os import getcwd, chdir
 
 class Video():
   
@@ -165,27 +168,73 @@ class Video():
 # The Main Script
 def main():
   """It takes in the id to the youtube video and returns some other information regarding to it."""
-
   num_arg = len(sys.argv)
   if(num_arg==1):
-    print("There are no video id's provided")
-
+    print("There are no options provided")
   else:
-    
-    for i in range(1,num_arg):
-      
-      print(f"Checking for the video with the id number {i}............\n")
-      ID = sys.argv[i]
 
-      # Checking for the error when the wrong video id is provided
+    option=sys.argv[1]
+    if( option !='-h' and option!='--help'):
+      # Getting the path to the home (~) directory
+      abs_path=getcwd()
+      data=abs_path.split('/')
       try:
-        vid = Video( ID , 'yt' )
+        base_path=f"/{data[1]}/{data[2]}"
       except:
-        raise Exception( "Sorry, An error has occured. Please check the video id or the video might not be available. Proceeding on to the next video." )
-        continue
+        print("You are in a directory which is not home.")
+
+      path_from_home= input("Enter the path from the directory where you want to save the files: ")
+      final_path=base_path+"/"+path_from_home
+    
+
+    if(option=='-i' or option=='--id'):
       
-      print( f"Video:  {vid.name}." )
-      vid.options()
+      if(num_arg==2):
+        print("There were no id's given. Type -h or --help for help.")
+        return
+
+      for i in range(2,num_arg):
+
+        print(f"Checking for the video with the id number {i-1}............\n")
+        ID = sys.argv[i]
+
+        # Checking for the error when the wrong video id is provided
+        try:
+          vid = Video( ID , final_path )
+        except:
+          raise Exception( "Sorry, An error has occured. Please check the video id or the video might not be available. Proceeding on to the next video." )
+          continue
+        
+        print( f"Video:  {vid.name}." )
+        vid.options()
+    
+    elif( option=='-r' or option=='--read'):
+      
+      read_file= abs_path + "/"+sys.argv[2]
+
+      with open(read_file,'r') as videos:
+        
+        video_id=videos.readlines()
+        lines= len(video_id)
+
+        for i in range(0,lines):
+          
+          print(f"Checking for the video with the id on line number {i+1}............\n")
+          ID = video_id[i]
+
+          # Checking for the error when the wrong video id is provided
+          try:
+            vid = Video( ID , final_path )
+          except:
+            raise Exception( "Sorry, An error has occured. Please check the video id or the video might not be available. Proceeding on to the next video." )
+            continue
+        
+        print( f"Video:  {vid.name}." )
+        vid.options()
+
+    elif( option=='-h' or option=='--help'):
+      print("\nThese are the following options:\n   -i or --id\n     Shows general options such as thumbnail link, download options for all the video ids given.\n   -r or --read\n     Show all the available options for the videos id written in separate lines in the file. Takes the files name as the arguement\n   -h or --help\n     Show the help for the command.\n")
+      
 
 # Running the script
 if __name__ == "__main__":
