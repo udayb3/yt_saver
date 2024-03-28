@@ -59,6 +59,7 @@ class Video():
         self.line()
 
       print("\nExiting the script for the current video id...........................Done :)\n")
+      checker1= 1
 
   def display_options(self):
     """This displays different options which can used with the script."""
@@ -229,8 +230,8 @@ def main():
             raise Exception( "Sorry, An error has occured. Please check the video id or the video might not be available. Proceeding on to the next video." )
             continue
         
-        print( f"Video:  {vid.name}." )
-        vid.options()
+          print( f"Video:  {vid.name}." )
+          vid.options()
 
     elif( option=='-h' or option=='--help'):
       print("\nThese are the following options:\n   -i or --id\n     Shows general options such as thumbnail link, download options for all the video ids given.\n   -r or --read\n     Show all the available options for the videos id written in separate lines in the file. Takes the files name as the arguement\n   -h or --help\n     Show the help for the command.\n")
